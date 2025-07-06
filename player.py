@@ -3,6 +3,8 @@ from constants import *
 import pygame
 
 class Player(CircleShape):
+    containers = ()
+
     def __init__(self, x, y):
         CircleShape.__init__(self, x, y, PLAYER_RADIUS)
         self.rotation = 0
@@ -18,7 +20,7 @@ class Player(CircleShape):
         return [a, b, c]
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)# sub-classes must override
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
         pass
 
     def rotate(self, dt):

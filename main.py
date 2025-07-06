@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 from player import *
+from asteroid import *
 
 def main():
     print("Starting Asteroids!")
@@ -10,11 +11,16 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     game_clock = pygame.time.Clock()
     dt = 0
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
-    updatable.add(player)
-    drawable.add(player)
+    asteroids = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (updatable, drawable, asteroids)
+
+    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    print("Drawable contains:", list(drawable))
+    print("Updatable contains:", list(updatable))
 
     while 1 == 1:
         screen.fill("black", rect=None, special_flags=0)
