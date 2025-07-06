@@ -2,6 +2,7 @@ import pygame
 from constants import *
 from player import *
 from asteroid import *
+from asteroidfield import *
 
 def main():
     print("Starting Asteroids!")
@@ -14,11 +15,15 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
     Asteroid.containers = (updatable, drawable, asteroids)
+    AsteroidField.containers = (updatable)
+    Shot.containers = (updatable, drawable, shots)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    AsteroidField()
 
-    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     print("Drawable contains:", list(drawable))
     print("Updatable contains:", list(updatable))
 
@@ -30,6 +35,14 @@ def main():
         updatable.update(dt)
         for thing in drawable:
             thing.draw(screen)
+        for asteroid in asteroids:
+            if asteroid.is_colliding(player):
+                print("Game over!")
+                raise SystemExit("Game over!")
+            for shot in shots:
+                if shot.is_colliding(asteroid):
+                    asteroid.split(dt)
+                    shot.kill()
         pygame.display.flip()
         dt = game_clock.tick(60)/1000
 
